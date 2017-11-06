@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-11-06T05:04:02.000Z</updated>
+  <updated>2017-11-06T05:06:06.000Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://www.an-time.top/2017/11/06/docker-swarm%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/"/>
     <id>http://www.an-time.top/2017/11/06/docker-swarm集群搭建/</id>
     <published>2017-11-06T03:28:22.000Z</published>
-    <updated>2017-11-06T05:04:02.000Z</updated>
+    <updated>2017-11-06T05:06:06.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>dokcer swarm是一个docker集群管理工具，把大量的docker容器集中管理，类似的还有k8s等。</p><h1 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h1><p>本案例需要2台以上机器，这里使用docker machine来生成3台虚拟机来测试。可根据自己资源多少来选择不同的方案。<br>创建一个管理节点机器manager1，两个工作节点worker1和worker2</p><pre><code>#docker-machine create --driver virtualbox manager1#docker-machine create --driver virtualbox worker1#docker-machine create --driver virtualbox worker2</code></pre><p>现在，有两三台虚拟机，我们查看一下：</p><pre><code>#docker-machine lsNAME       ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORSmanager1   -        virtualbox   Running   tcp://192.168.99.100:2376           v17.10.0-ceworker1    -        virtualbox   Running   tcp://192.168.99.103:2376           v17.10.0-ceworker2    -        virtualbox   Running   tcp://192.168.99.104:2376           v17.10.0-ce</code></pre><h1 id="创建swarm集群："><a href="#创建swarm集群：" class="headerlink" title="创建swarm集群："></a>创建swarm集群：</h1><p>用上面创建的3台虚拟机，来创建一个swarm集群，首先进入管理节点：</p><pre><code>#docker-machine ssh manager1#docker swarm init --listen-addr 192.168.99.100:2377 --advertise-addr 192.168.99.100Swarm initialized: current node (23lkbq7uovqsg550qfzup59t6) is now a manager.To add a worker to this swarm, run the following command:docker swarm join \--token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r \192.168.99.100:2377To add a manager to this swarm, run &apos;docker swarm join-token manager&apos; and follow the instructions.</code></pre><p>上面用 –listen-addr来指定监听的ip和端口。</p><p>接下来把worker1和worker2加入集群：</p><pre><code>#docker-machine ssh worker1#docker swarm join --token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r 192.168.99.100:2377#docker-machine ssh worker2#docker swarm join --token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r 192.168.99.100:2377</code></pre><p>上面可以加入参数–listen-addr作为监听准备，因为有时候可能遇到把一个worker节点提升为manager节点。本例不添加。</p><p>初始化成功后，现在，我们拥有了一个主节点两个从节点的swarm集群，进入管理节点查看一下相应信息：</p><pre><code>#docker-machine ssh manager1#docker node lsID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUStdbdcsorrtqymgmn71t5pfwxm *   manager1            Ready               Active              Leaderb5twxb6zeacvndsklkxenlhk2     worker1             Ready               Activexdvapziebpux1iee52d4tvqa9     worker2             Ready               Active</code></pre><p>现在，每个节点都归属于swarm，并处于待机状态。manager1是管理节点，worker1和worker2是工作节点。</p><p>在管理节点上查看网络状态：</p><pre><code>#docker-machine ssh manager1#docker network lsNETWORK ID          NAME                DRIVER              SCOPEde994a4d6a4f        bridge              bridge              localca45f2e489de        docker_gwbridge     bridge              local3d22755e453b        host                host                localrgpmn1hh5qe1        ingress             overlay             swarm86b55cffdbd2        none                null                local</code></pre><p>可以看到在 swarm 上默认已有一个名为 ingress 的 overlay 网络, 默认在 swarm 里使用，本例子中会创建一个新的 overlay 网络。</p><pre><code>#docker network create --driver overlay swarm_test#docker network lsNETWORK ID          NAME                DRIVER              SCOPEde994a4d6a4f        bridge              bridge              localca45f2e489de        docker_gwbridge     bridge              local3d22755e453b        host                host                localrgpmn1hh5qe1        ingress             overlay             swarm86b55cffdbd2        none                null                localn9jduvforkcm        swarm_test          overlay             swarm</code></pre><p>可以看到我们创建的网络swarm_test。</p><h1 id="在跨主机网络上部署应用："><a href="#在跨主机网络上部署应用：" class="headerlink" title="在跨主机网络上部署应用："></a>在跨主机网络上部署应用：</h1><p>首先，分别在各个节点上下载一个要部署应用的镜像：</p><pre><code>#docker-machine ssh manager1#docker pull nginx#docker-machine ssh worker1#docker pull nginx#docker-machine ssh worker2#docker pull nginx</code></pre><p>上面分别在3个节点上下载了nginx的镜像，下面在swarm中部署nginx应用：</p><pre><code>#docker service create --replicas 2 -p 7080:80 --name hello --networ=swarm_test nginx</code></pre><p>查看服务：</p><pre><code>#docker service lsID                  NAME                MODE                REPLICAS            IMAGE               PORTSsl4zi20wk6um        hello               replicated          2/2                 nginx:latest        *:7080-&gt;80/tcp</code></pre><p>查看hello的详细情况：</p><pre><code>#docker service ps helloID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE         ERROR               PORTS0b3pykmkl7i9        hello.2             nginx:latest        manager1            Running             Running 2 hours agos7ud2yba1p0r        hello.3             nginx:latest        worker1             Running             Running 2 hours ago</code></pre><p>可以看出，两个容器分别运行在管理节点和worker1节点。</p>]]></content>
     
@@ -38,30 +38,9 @@
     
       <category term="docker swarm" scheme="http://www.an-time.top/tags/docker-swarm/"/>
     
-      <category term="虚拟化，集群" scheme="http://www.an-time.top/tags/%E8%99%9A%E6%8B%9F%E5%8C%96%EF%BC%8C%E9%9B%86%E7%BE%A4/"/>
+      <category term="虚拟化" scheme="http://www.an-time.top/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
     
-  </entry>
-  
-  <entry>
-    <title>hello</title>
-    <link href="http://www.an-time.top/2017/10/31/hello/"/>
-    <id>http://www.an-time.top/2017/10/31/hello/</id>
-    <published>2017-10-31T09:15:01.000Z</published>
-    <updated>2017-10-31T09:21:48.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h1><h2 id="Welcome"><a href="#Welcome" class="headerlink" title="Welcome !!!"></a>Welcome !!!</h2>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;hello-world&quot;&gt;&lt;a href=&quot;#hello-world&quot; class=&quot;headerlink&quot; title=&quot;hello world&quot;&gt;&lt;/a&gt;hello world&lt;/h1&gt;&lt;h2 id=&quot;Welcome&quot;&gt;&lt;a href=&quot;#Welcome&quot; c
-      
-    
-    </summary>
-    
-    
-      <category term="test" scheme="http://www.an-time.top/tags/test/"/>
+      <category term="集群" scheme="http://www.an-time.top/tags/%E9%9B%86%E7%BE%A4/"/>
     
   </entry>
   
