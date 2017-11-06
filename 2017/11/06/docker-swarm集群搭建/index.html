@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="真的英雄一定敢于，电闪雷鸣鸡犬不宁中，智慧而坚强的微笑；那些善于把痛苦锤炼成诗歌把眼泪化作心灵芬芳的人，才会一展生命的芬芳！"><title>docker swarm集群搭建 | 黑色时间</title><link rel="stylesheet" type="text/css" href="//fonts.css.network/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">docker swarm集群搭建</h1><a id="logo" href="/.">黑色时间</a><p class="description">在时间的长河中，每一个人生,每一个事迹都是沧海里的一粟，人们苦苦追求，穿越那片黑色的时间</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/Navigation/"><i class="fa fa-site"> 导航</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">docker swarm集群搭建</h1><div class="post-meta"><a href="/2017/11/06/docker-swarm集群搭建/#comments" class="comment-count"></a><p><span class="date">Nov 06, 2017</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>dokcer swarm是一个docker集群管理工具，把大量的docker容器集中管理，类似的还有k8s等。</p>
+<h1 id="准备："><a href="#准备：" class="headerlink" title="准备："></a>准备：</h1><p>本案例需要2台以上机器，这里使用docker machine来生成3台虚拟机来测试。可根据自己资源多少来选择不同的方案。<br>创建一个管理节点机器manager1，两个工作节点worker1和worker2</p>
+<pre><code>#docker-machine create --driver virtualbox manager1
+#docker-machine create --driver virtualbox worker1
+#docker-machine create --driver virtualbox worker2
+</code></pre><p>现在，有两三台虚拟机，我们查看一下：</p>
+<pre><code>#docker-machine ls
+NAME       ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+manager1   -        virtualbox   Running   tcp://192.168.99.100:2376           v17.10.0-ce
+worker1    -        virtualbox   Running   tcp://192.168.99.103:2376           v17.10.0-ce
+worker2    -        virtualbox   Running   tcp://192.168.99.104:2376           v17.10.0-ce
+</code></pre><h1 id="创建swarm集群："><a href="#创建swarm集群：" class="headerlink" title="创建swarm集群："></a>创建swarm集群：</h1><p>用上面创建的3台虚拟机，来创建一个swarm集群，首先进入管理节点：</p>
+<pre><code>#docker-machine ssh manager1
+#docker swarm init --listen-addr 192.168.99.100:2377 --advertise-addr 192.168.99.100
+Swarm initialized: current node (23lkbq7uovqsg550qfzup59t6) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+docker swarm join \
+--token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r \
+192.168.99.100:2377
+
+To add a manager to this swarm, run &apos;docker swarm join-token manager&apos; and follow the instructions.
+</code></pre><p>上面用 –listen-addr来指定监听的ip和端口。</p>
+<p>接下来把worker1和worker2加入集群：</p>
+<pre><code>#docker-machine ssh worker1
+#docker swarm join --token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r 192.168.99.100:2377
+#docker-machine ssh worker2
+#docker swarm join --token SWMTKN-1-3z5rzoey0u6onkvvm58f7vgkser5d7z8sfshlu7s4oz2gztlvj-c036gwrakjejql06klrfc585r 192.168.99.100:2377
+</code></pre><p>上面可以加入参数–listen-addr作为监听准备，因为有时候可能遇到把一个worker节点提升为manager节点。本例不添加。</p>
+<p>初始化成功后，现在，我们拥有了一个主节点两个从节点的swarm集群，进入管理节点查看一下相应信息：</p>
+<pre><code>#docker-machine ssh manager1
+#docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS
+tdbdcsorrtqymgmn71t5pfwxm *   manager1            Ready               Active              Leader
+b5twxb6zeacvndsklkxenlhk2     worker1             Ready               Active
+xdvapziebpux1iee52d4tvqa9     worker2             Ready               Active
+</code></pre><p>现在，每个节点都归属于swarm，并处于待机状态。manager1是管理节点，worker1和worker2是工作节点。</p>
+<p>在管理节点上查看网络状态：</p>
+<pre><code>#docker-machine ssh manager1
+#docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+de994a4d6a4f        bridge              bridge              local
+ca45f2e489de        docker_gwbridge     bridge              local
+3d22755e453b        host                host                local
+rgpmn1hh5qe1        ingress             overlay             swarm
+86b55cffdbd2        none                null                local
+</code></pre><p>可以看到在 swarm 上默认已有一个名为 ingress 的 overlay 网络, 默认在 swarm 里使用，本例子中会创建一个新的 overlay 网络。</p>
+<pre><code>#docker network create --driver overlay swarm_test
+#docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+de994a4d6a4f        bridge              bridge              local
+ca45f2e489de        docker_gwbridge     bridge              local
+3d22755e453b        host                host                local
+rgpmn1hh5qe1        ingress             overlay             swarm
+86b55cffdbd2        none                null                local
+n9jduvforkcm        swarm_test          overlay             swarm
+</code></pre><p>可以看到我们创建的网络swarm_test。</p>
+<h1 id="在跨主机网络上部署应用："><a href="#在跨主机网络上部署应用：" class="headerlink" title="在跨主机网络上部署应用："></a>在跨主机网络上部署应用：</h1><p>首先，分别在各个节点上下载一个要部署应用的镜像：</p>
+<pre><code>#docker-machine ssh manager1
+#docker pull nginx
+
+#docker-machine ssh worker1
+#docker pull nginx
+
+#docker-machine ssh worker2
+#docker pull nginx
+</code></pre><p>上面分别在3个节点上下载了nginx的镜像，下面在swarm中部署nginx应用：</p>
+<pre><code>#docker service create --replicas 2 -p 7080:80 --name hello --networ=swarm_test nginx
+</code></pre><p>查看服务：</p>
+<pre><code>#docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
+sl4zi20wk6um        hello               replicated          2/2                 nginx:latest        *:7080-&gt;80/tcp
+</code></pre><p>查看hello的详细情况：</p>
+<pre><code>#docker service ps hello
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE         ERROR               PORTS
+0b3pykmkl7i9        hello.2             nginx:latest        manager1            Running             Running 2 hours ago
+s7ud2yba1p0r        hello.3             nginx:latest        worker1             Running             Running 2 hours ago
+</code></pre><p>可以看出，两个容器分别运行在管理节点和worker1节点。</p>
+</div><div class="tags"><a href="/tags/docker-swarm/">docker swarm</a><a href="/tags/虚拟化，集群/">虚拟化，集群</a></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2017/10/31/hello/" class="next">hello</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介："><span class="toc-text">简介：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#准备："><span class="toc-text">准备：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建swarm集群："><span class="toc-text">创建swarm集群：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在跨主机网络上部署应用："><span class="toc-text">在跨主机网络上部署应用：</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/11/06/docker-swarm集群搭建/">docker swarm集群搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/31/hello/">hello</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/docker-swarm/" style="font-size: 15px;">docker swarm</a> <a href="/tags/虚拟化，集群/" style="font-size: 15px;">虚拟化，集群</a> <a href="/tags/test/" style="font-size: 15px;">test</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="http://freebuf.com" title="FreeBuf" target="_blank">FreeBuf</a><ul></ul><a href="http://www.t00ls.net" title="T00ls" target="_blank">T00ls</a><ul></ul><a href="http://www.91ri.org" title="91Ri" target="_blank">91Ri</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">an_time.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a target="_blank" href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="http://www.an-time.top"> an_time.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
