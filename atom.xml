@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-11-06T06:54:52.000Z</updated>
+  <updated>2017-11-07T13:26:42.000Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>破解Wi-Fi密码</title>
+    <link href="http://www.an-time.top/2017/11/07/%E7%A0%B4%E8%A7%A3Wi-Fi%E5%AF%86%E7%A0%81/"/>
+    <id>http://www.an-time.top/2017/11/07/破解Wi-Fi密码/</id>
+    <published>2017-11-07T13:03:46.000Z</published>
+    <updated>2017-11-07T13:26:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>目前无线渗透试的两种方法：1、抓握手包，跑包。2、通过WPS进行跑pin码 </p><p>当然第2种方法是要求路由器开启了wps功能。并且要求路由器没有设置pin防护，其它的方法如路由器漏洞等不在此讨论范围内。</p><p>WEP方式认证的路由器已经很少了，而且这种认证方式不但非常不安全且绝对可破，不再讲解，本文只讲WPA认证方式的渗透方法。<br>其实最有效的取得密码的方法是直接编个理由过去问！（社工）<br>原理：抓到的包中有密码的密文，做暴力跑包即可。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;目前无线渗透试的两种方法：1、抓握手包，跑包。2、通过WPS进行跑pin码 &lt;/p&gt;
+&lt;p&gt;当然第2种方法是要求路由器开启了wps功
+      
+    
+    </summary>
+    
+    
+      <category term="破解wifi" scheme="http://www.an-time.top/tags/%E7%A0%B4%E8%A7%A3wifi/"/>
+    
+      <category term="kali" scheme="http://www.an-time.top/tags/kali/"/>
+    
+      <category term="aircrack-ng" scheme="http://www.an-time.top/tags/aircrack-ng/"/>
+    
+  </entry>
   
   <entry>
     <title>docker swarm集群搭建</title>
