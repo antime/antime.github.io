@@ -71,4 +71,30 @@
     
   </entry>
   
+  <entry>
+    <title>用nginx搭建文件服务器</title>
+    <link href="http://www.an-time.top/2017/09/22/%E7%94%A8nginx%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <id>http://www.an-time.top/2017/09/22/用nginx搭建文件服务器/</id>
+    <published>2017-09-22T03:15:53.000Z</published>
+    <updated>2017-11-22T04:27:12.171Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>工作需要，搭建一个文件服务器。</p><h1 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h1><p>先创建一台虚拟机，ip地址为：106.14.242.15</p><p><img src="http://an-time.top/an_time.site.pictures/fileSystem/environment.png" alt="环境"></p><h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><ul><li><p>配置源系统源</p><pre><code># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</code></pre></li><li><p>安装nginx</p><pre><code># yum install nginx -y</code></pre></li><li><p>查找配置文件</p><pre><code># rpm -qc nginx</code></pre><p>可以看到胚子文件如下图：<br><img src="http://an-time.top/an_time.site.pictures/fileSystem/setting.png" alt="配置文件">    </p></li><li><p>修改配置文件</p><pre><code>#cat /etc/nginx/nginx.conf# For more information on configuration, see:#   * Official English Documentation: http://nginx.org/en/docs/#   * Official Russian Documentation: http://nginx.org/ru/docs/user nginx;worker_processes auto;error_log /var/log/nginx/error.log;pid /run/nginx.pid;events {    worker_connections 1024;}http {    log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;              &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;              &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;    access_log  /var/log/nginx/access.log  main;    sendfile            on;    tcp_nopush          on;    tcp_nodelay         on;    keepalive_timeout   65;    types_hash_max_size 2048;    include             /etc/nginx/mime.types;    default_type        application/octet-stream;    # Load modular configuration files from the /etc/nginx/conf.d directory.    # See http://nginx.org/en/docs/ngx_core_module.html#include    # for more information.    include /etc/nginx/conf.d/*.conf;    server {        listen       80 ;        server_name  file.cloud.jyall.com;        charset utf-8;        # Load configuration files for the default server block.        location / {        root  /data;          index  index.php index.html index.htm;         autoindex on;         autoindex_exact_size on;        autoindex_localtime on;        }        access_log  /var/log/file.log;        error_page 404 /404.html;        location = /40x.html {        }        error_page 500 502 503 504 /50x.html;        location = /50x.html {        }    }}</code></pre></li><li><p>创建文件目录和测试数据</p><pre><code># mkdir /data# cd /data# touch 123.txt# echo &apos;test&apos; &gt; 123.txt</code></pre></li></ul><h1 id="结果测试"><a href="#结果测试" class="headerlink" title="结果测试"></a>结果测试</h1><p>浏览器访问地址，如下图：</p><p><img src="http://an-time.top/an_time.site.pictures/fileSystem/test1.png" alt="测试"><img src="http://an-time.top/an_time.site.pictures/fileSystem/test2.png" alt="测试2"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;工作需要，搭建一个文件服务器。&lt;/p&gt;
+&lt;h1 id=&quot;环境介绍&quot;&gt;&lt;a href=&quot;#环境介绍&quot; class=&quot;headerlink&quot; t
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="http://www.an-time.top/tags/nginx/"/>
+    
+      <category term="文件服务器" scheme="http://www.an-time.top/tags/%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
+  
 </feed>
