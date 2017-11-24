@@ -72,6 +72,32 @@
   </entry>
   
   <entry>
+    <title>短网址还原工具</title>
+    <link href="http://www.an-time.top/2017/10/24/%E7%9F%AD%E7%BD%91%E5%9D%80%E8%BF%98%E5%8E%9F%E5%B7%A5%E5%85%B7/"/>
+    <id>http://www.an-time.top/2017/10/24/短网址还原工具/</id>
+    <published>2017-10-24T01:20:10.000Z</published>
+    <updated>2017-11-24T01:32:33.889Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>随着安全意识的不断提升，很多都开始使用短网址。这里写了一个小工具，实现把短网址还原成原来的网址。</p><h1 id="实现："><a href="#实现：" class="headerlink" title="实现："></a>实现：</h1><pre><code>#coding = utf8import urllib2, httplib, os, sysclass RedirectHandler(urllib2.HTTPRedirectHandler):    def http_error_301(self, req, fp, code, msg, headers):        result = urllib2.HTTPRedirectHandler.http_error_301(self, req, fp, code, msg, headers)        result.status = code        return result    def http_error_302(self, req, fp, code, msg, headers):        result = urllib2.HTTPRedirectHandler.http_error_302(self, req, fp, code, msg, headers)        result.status = code        return result# Bannerdef Banner():    print(&quot;=================================================&quot;)    print(&quot;                pyLongURL                        &quot;)    print(&quot;=================================================&quot;)# Usagedef help_menu(cmd):    print(&quot;Usage: %s &lt;short_URL&gt;\n&quot;) % (cmd)    print(&quot;Please enter need an URL!&quot;)def main(szURL):    httplib.HTTPConnection.debuglevel = 1    request = urllib2.Request(szURL)    opener = urllib2.build_opener(RedirectHandler())    f = opener.open(request)    print(f.url)if __name__ == &quot;__main__&quot;:    Banner()    if len(sys.argv)&lt;2:        help_menu(sys.argv[0])    else:        main(sys.argv[1])</code></pre><h1 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h1><p><img src="http://www.an-time.top/an_time.site.pictures/shotUrl/test.png" alt="测试结果"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;随着安全意识的不断提升，很多都开始使用短网址。这里写了一个小工具，实现把短网址还原成原来的网址。&lt;/p&gt;
+&lt;h1 id=&quot;实现：&quot;&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="短网址还原" scheme="http://www.an-time.top/tags/%E7%9F%AD%E7%BD%91%E5%9D%80%E8%BF%98%E5%8E%9F/"/>
+    
+      <category term="工具" scheme="http://www.an-time.top/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
     <title>用nginx搭建文件服务器</title>
     <link href="http://www.an-time.top/2017/09/22/%E7%94%A8nginx%E6%90%AD%E5%BB%BA%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     <id>http://www.an-time.top/2017/09/22/用nginx搭建文件服务器/</id>
@@ -94,6 +120,29 @@
       <category term="nginx" scheme="http://www.an-time.top/tags/nginx/"/>
     
       <category term="文件服务器" scheme="http://www.an-time.top/tags/%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Markdown教程</title>
+    <link href="http://www.an-time.top/2017/08/14/Markdown%E6%95%99%E7%A8%8B/"/>
+    <id>http://www.an-time.top/2017/08/14/Markdown教程/</id>
+    <published>2017-08-14T14:54:19.000Z</published>
+    <updated>2017-11-23T15:05:44.251Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>Markdown 是一种用来写作的轻量级「标记语言」，它用简洁的语法代替排版，而不像一般我们用的字处理软件 Word 或 Pages 有大量的排版、字体设置。它使我们专心于码字，用「标记」语法，来代替常见的排版格式。例如此文从内容到格式，甚至插图，键盘就可以通通搞定了。Markdown 从写作到完成，导出格式随心所欲，你可以导出 HTML 格式的文件用来网站发布，也可以十分方便的导出 PDF 格式。</p><h1 id="1-标题"><a href="#1-标题" class="headerlink" title="1. 标题"></a>1. 标题</h1><p>为了获得上面的 “<code>1. 标题</code>”， 在 Markdown 编辑器里输入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># 1. 标题</div></pre></td></tr></table></figure><p>“<code>#</code>” 后最好加个空格。除此之外，还有 5 级标题，依次有不同的字体大小，即</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">## 二级标题</div><div class="line">### 三级标题</div><div class="line">#### 四级标题</div><div class="line">##### 五级标题</div><div class="line">###### 六级标题</div></pre></td></tr></table></figure><p>这样就有：</p><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><hr><h1 id="2-字体"><a href="#2-字体" class="headerlink" title="2. 字体"></a>2. 字体</h1><p>最常用的强调方式，那就是 <strong>加粗</strong> 了，你得这样：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">最常用的强调方式，那就是 **加粗** 了，你得这样：</div></pre></td></tr></table></figure><p>通常我喜欢在 “<code>**加粗的部分**</code>” 旁边各加一个空格，当然你也可以不这样。<br>斜体则多用在于书名，比如：我从来没看过 <em>Jane Eyre</em></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">斜体则多用在于书名，比如：我从来没看过 *Jane Eyre*</div></pre></td></tr></table></figure><p>但中文的斜体我觉得真是不美，像：《<em>简 · 爱</em>》，一般还是别用了。</p><hr><h1 id="3-层次"><a href="#3-层次" class="headerlink" title="3. 层次"></a>3. 层次</h1><p>比如写个读书笔记，你得</p><h4 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h4><ol><li>第一节</li></ol><ul><li>第二节(你不用敲 “2”，自动就有了）<ul><li>第一小节（推荐每层次缩进四个空格）<ul><li>小小节 1</li><li>小小节 2</li></ul></li><li>第二小节</li></ul></li></ul><p>也不难：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#### 第一章</div><div class="line"></div><div class="line">1. 第一节</div><div class="line">* 第二节(你不用敲 &quot;2&quot;，自动就有了）</div><div class="line">    * 第一小节（推荐每层次缩进四个空格）</div><div class="line">        * 小小节 1</div><div class="line">        * 小小节 2</div><div class="line">    * 第二小节</div></pre></td></tr></table></figure><p>“<code>*</code>” 后面要加空格，这是必须的，除了 <code>*</code>，还可以使用 <code>+</code> 或者 <code>-</code>。</p><p>如果格式出现问题，多加个空行，一般就好了。</p><hr><h1 id="4-链接，图片"><a href="#4-链接，图片" class="headerlink" title="4. 链接，图片"></a>4. 链接，图片</h1><p>你：我没读过 <em>Jane Eyre</em><br>我：以后别跟我说话！<br>你：。。。<br>我：我也没读过，但是， <a href="http://book.douban.com/subject/1141406/" target="_blank" rel="external"><strong><em>Jane Eyre</em></strong></a> is not just <strong><em>Jane Eyre</em></strong><br><img src="http://img3.douban.com/mpic/s1108264.jpg" alt=""></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">我：我也没读过，但是， [***Jane Eyre***](http://book.douban.com/subject/1141406/) is not just ***Jane Eyre***</div><div class="line">![](http://img3.douban.com/mpic/s1108264.jpg)</div></pre></td></tr></table></figure><hr><h1 id="5-其他"><a href="#5-其他" class="headerlink" title="5. 其他"></a><a href="chrome://not-a-link" target="_blank" rel="external">5. 其他</a></h1><p>你可能还没注意到本文每部分之间的分割线和 <code>其他</code> 的链接其实没有链接<br>我爱 <code>分割线</code>， 我爱 <a href="chrome://not-a-link" target="_blank" rel="external"><strong>链接</strong></a>，哪怕它只有颜色~</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line"></div><div class="line"># [5. 其他][null-link]</div><div class="line"></div><div class="line">你可能还没注意到本文每部分之间的分割线和 `其他` 的链接其实没有链接</div><div class="line">我爱 `分割线`， 我爱 [**链接**][null-link]，哪怕它只有颜色~</div><div class="line"></div><div class="line">[null-link]: chrome://not-a-link</div></pre></td></tr></table></figure><p>“<code>---</code>” 的上下最好各空一行</p><hr><p><strong>P.S.</strong> 补充一种高端的链接: <a href="http://www.google.com.sg" title="Google Sg 更快，更好用。好，现在单击吧" target="_blank" rel="external">鼠标移过来，<strong>先别单击</strong> ~</a></p><p>代码如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">**P.S.** 补充一种高端的链接: [鼠标移过来，**先别单击** ~][hover]</div><div class="line">[hover]: http://www.google.com.sg &quot;Google Sg 更快，更好用。好，现在单击吧&quot;</div></pre></td></tr></table></figure><p>（可惜 Google 被墙了）</p><p><strong>P.P.S.</strong> 图片链接：(点击图片可跳转）<br><a href="http://book.douban.com/subject/1141406/" target="_blank" rel="external"><img src="http://img3.douban.com/mpic/s1108264.jpg" alt=""></a></p><p>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[![][jane-eyre-pic]][jane-eyre-douban]</div><div class="line">[jane-eyre-pic]: http://img3.douban.com/mpic/s1108264.jpg</div><div class="line">[jane-eyre-douban]: http://book.douban.com/subject/1141406/</div></pre></td></tr></table></figure></p><p>（简书最新的 Markdown 不能使用图片链接。。。感受不爱）<br><strong>P.P.P.S.</strong></p><p>更多的 Markdown 特性测试，见我的 <a href="http://jianshu.io/p/6827f850f723" target="_blank" rel="external">Markdown 一篇博客</a></p><p>在简书中输入数学公式：见我的 <a href="http://jianshu.io/p/e8a14ec1c614" target="_blank" rel="external">简书中编辑数学公式</a></p><p>如何写出漂亮的 Markdown 文章？戳 <a href="http://jianshu.io/p/3bd994e702a7" target="_blank" rel="external">Markdown 写作规范参考</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;Markdown 是一种用来写作的轻量级「标记语言」，它用简洁的语法代替排版，而不像一般我们用的字处理软件 Word 或 Pages
+      
+    
+    </summary>
+    
+    
+      <category term="Markdown" scheme="http://www.an-time.top/tags/Markdown/"/>
     
   </entry>
   
