@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-12-05T09:29:28.382Z</updated>
+  <updated>2017-12-05T09:32:43.387Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://www.an-time.top/2017/12/05/docker%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7-%E6%B5%B7%E9%B8%A5/"/>
     <id>http://www.an-time.top/2017/12/05/docker监控工具-海鸥/</id>
     <published>2017-12-05T09:14:19.000Z</published>
-    <updated>2017-12-05T09:29:28.382Z</updated>
+    <updated>2017-12-05T09:32:43.387Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>海鸥是Docker的最佳小伙伴，它为Docker实现了一套Web监控页面。使用Docker都希望有Web监控和管理界面，海鸥就是为此量身订造的。它可以通过一行命令安装运行，你在此能够监控你的所有Docker容器和镜像。现在，海鸥已经完美支持英语、简体中文和繁体中文！</p><a id="more"></a><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><pre><code># docker run -d -p 10086:10086 -v /var/run/docker.sock:/var/run/docker.sock tobegit3hub/seagull</code></pre><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/run.png" alt="安装"></p><h1 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h1><p>安装完后，访问ip:10086，即可进入海鸥的主界面，进行相应的操作。</p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page1.png" alt="page1"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page2.png" alt="page2"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page3.png" alt="page3"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page4.png" alt="page4"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page5.png" alt="page5"></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>海鸥是Docker的最佳小伙伴，它为Docker实现了一套Web监控页面。使用Docker都希望有Web监控和管理界面，海鸥就是为此量身订造的。它可以通过一行命令安装运行，你在此能够监控你的所有Docker容器和镜像。现在，海鸥已经完美支持英语、简体中文和繁体中文！</p><a id="more"></a><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><pre><code># docker run -d -p 10086:10086 -v /var/run/docker.sock:/var/run/docker.sock tobegit3hub/seagull</code></pre><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/run.png" alt="安装"></p><h1 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h1><p>安装完后，访问ip:10086，即可进入海鸥的主界面，进行相应的操作。</p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page1.png" alt="page1"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page2.png" alt="page2"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page3.png" alt="page3"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page4.png" alt="page4"></p><p><img src="http://www.an-time.top/an_time.site.pictures/haiou-docker/page5.png" alt="page5"></p><p>[参考：<a href="https://github.com/tobegit3hub/seagull" target="_blank" rel="external">https://github.com/tobegit3hub/seagull</a> ]</p>]]></content>
     
     <summary type="html">
     
