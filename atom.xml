@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-12-21T11:43:56.444Z</updated>
+  <updated>2017-12-21T12:01:30.044Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://www.an-time.top/2017/12/21/%E5%86%B3%E6%96%AD%E5%90%A7%EF%BC%8C%E8%87%B3%E6%88%91%E4%BB%AC%E9%80%9D%E5%8E%BB%E7%9A%84hacker%E6%A2%A6/"/>
     <id>http://www.an-time.top/2017/12/21/决断吧，至我们逝去的hacker梦/</id>
     <published>2017-12-21T10:37:36.000Z</published>
-    <updated>2017-12-21T11:43:56.444Z</updated>
+    <updated>2017-12-21T12:01:30.044Z</updated>
     
-    <content type="html"><![CDATA[<p>此刻心情沉闷，什么也不想说，看视频听声音吧。。。。。。<br>决断吧，离去了。。。</p><hr><video width="700" height="500" poster="http://www.an-time.top/an_time.site.pictures/LeaveHacker/leave.png"><br>      <source id="mp4" src="http://www.an-time.top/an_time.site.pictures/LeaveHacker/springOfHackers.mp4" type="video/mp4"><br>      <!--<source id="webm" src="http://media.w3.org/2010/05/sintel/trailer.webm" type="video/webm">--><br>      <!--<source id="ogv" src="http://media.w3.org/2010/05/sintel/trailer.ogv" type="video/ogg">--><br></video>]]></content>
+    <content type="html"><![CDATA[<p>此刻心情沉闷，什么也不想说，看视频听声音吧。。。。。。<br>决断吧，离去了。。。</p><hr><video width="700" height="500" id="video" controls preload="none" poster="http://www.an-time.top/an_time.site.pictures/LeaveHacker/leave.png"><br>      <source id="mp4" src="http://www.an-time.top/an_time.site.pictures/LeaveHacker/springOfHackers.mp4" type="video/mp4"><br>      <!--<source id="webm" src="http://media.w3.org/2010/05/sintel/trailer.webm" type="video/webm">--><br>      <!--<source id="ogv" src="http://media.w3.org/2010/05/sintel/trailer.ogv" type="video/ogg">--><br></video><!--<object type="application/x-shockwave-flash" id="ximalaya_player" data="http://www.ximalaya.com/swf/sound/red.swf?id=22673857" width="260" height="36"></object>-->]]></content>
     
     <summary type="html">
     
@@ -31,7 +31,7 @@
       
         &lt;p&gt;此刻心情沉闷，什么也不想说，看视频听声音吧。。。。。。&lt;br&gt;决断吧，离去了。。。&lt;/p&gt;
 &lt;hr&gt;
-&lt;video width=&quot;700&quot; height=&quot;500&quot; poster=&quot;http://www.an-time.top/an_time.site.pictures/L
+&lt;video width=&quot;700&quot; height=&quot;500&quot; id=&quot;video&quot; controls preload=&quot;none&quot; poster=&quot;http://www.
       
     
     </summary>
