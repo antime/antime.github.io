@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2017-12-28T14:01:03.335Z</updated>
+  <updated>2018-01-29T08:28:36.237Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用nginx域名转发绕过备案</title>
+    <link href="http://www.an-time.top/2018/01/29/%E4%BD%BF%E7%94%A8nginx%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%8F%91%E7%BB%95%E8%BF%87%E5%A4%87%E6%A1%88/"/>
+    <id>http://www.an-time.top/2018/01/29/使用nginx域名转发绕过备案/</id>
+    <published>2018-01-29T08:15:54.000Z</published>
+    <updated>2018-01-29T08:28:36.237Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>网站在阿里云上，由于原域名备案取消，需要重新备案，备案时间较长，总不能让网站在备案期间不能访问吧，而且seo方面也是不允许的。刚好手边有一个备过案能正常使用的域名，于是用nginx的反向代理功能实现域名转发，实现网站的不中断。<br><img src="http://p1i2d3tcv.bkt.clouddn.com/2018/01/29/1111.png" alt=""></p><h1 id="配置："><a href="#配置：" class="headerlink" title="配置："></a>配置：</h1><p>找一台非阿里云的服务器，这里找的是腾讯云的机器。在上面安装nginx，配置文件如下： </p><pre><code>server {listen 80;server_name a.com; #设置成需要绑定的域名location / {    proxy_pass http://b.com; #可以使用的备过案的域名    proxy_set_header X-Real-IP $remote_addr;    proxy_set_header User-Agent $http_user_agent;}</code></pre><p>启动nginx，访问a.com即可被转发到b.com。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;网站在阿里云上，由于原域名备案取消，需要重新备案，备案时间较长，总不能让网站在备案期间不能访问吧，而且seo方面也是不允许的。刚好手
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="http://www.an-time.top/tags/nginx/"/>
+    
+      <category term="备案" scheme="http://www.an-time.top/tags/%E5%A4%87%E6%A1%88/"/>
+    
+      <category term="绕过" scheme="http://www.an-time.top/tags/%E7%BB%95%E8%BF%87/"/>
+    
+  </entry>
   
   <entry>
     <title>zabbix分布式监控系统</title>
