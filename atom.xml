@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2018-02-12T12:46:32.211Z</updated>
+  <updated>2018-03-26T04:14:53.809Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内网机器使用squid做代理访问外网</title>
+    <link href="http://www.an-time.top/2018/03/26/%E5%86%85%E7%BD%91%E6%9C%BA%E5%99%A8%E4%BD%BF%E7%94%A8squid%E5%81%9A%E4%BB%A3%E7%90%86%E8%AE%BF%E9%97%AE%E5%A4%96%E7%BD%91/"/>
+    <id>http://www.an-time.top/2018/03/26/内网机器使用squid做代理访问外网/</id>
+    <published>2018-03-26T03:38:47.000Z</published>
+    <updated>2018-03-26T04:14:53.809Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="场景："><a href="#场景：" class="headerlink" title="场景："></a>场景：</h3><p>阿里云购买了一批内网机器，安装软件包的时候发现无法访问外网，于是乎在一台内网机器上绑定了一个弹性公网ip地址，在该机器上架设一个代理供其他内网机器上外网。</p><h3 id="代理机："><a href="#代理机：" class="headerlink" title="代理机："></a>代理机：</h3><pre><code># apt install squid -y# cd /etc/squid# cp squid.conf squid.conf_bak# vim squid.conf</code></pre><p>在该文件中找到 http_access deny all ,并将其改为http_access allow all  表示所有用户都可以访问这个代理，然后重启squid。</p><pre><code># systemctl restart squid</code></pre><h3 id="内网机器设置："><a href="#内网机器设置：" class="headerlink" title="内网机器设置："></a>内网机器设置：</h3><p>在其他内网机器上导入环境变量，即可访问外网了。</p><pre><code>export http_proxy=http://ip:3128export https_proxy=http://ip:3128</code></pre><p>但是这样都是针对本次生效的，shell关闭后下次打开就不可以使用了，于是写入 /etc/profile中使其永久生效。</p><pre><code># vim /etc/profile在最后一行加上下面的命令# export http_proxy=http://ip:3128# export https_proxy=http://ip:3128</code></pre><p>若要让运行的代码也能访问外网，需要在代码中设置代理即可。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;场景：&quot;&gt;&lt;a href=&quot;#场景：&quot; class=&quot;headerlink&quot; title=&quot;场景：&quot;&gt;&lt;/a&gt;场景：&lt;/h3&gt;&lt;p&gt;阿里云购买了一批内网机器，安装软件包的时候发现无法访问外网，于是乎在一台内网机器上绑定了一个弹性公网ip地址，在该机器上架设一个代理
+      
+    
+    </summary>
+    
+    
+      <category term="网络" scheme="http://www.an-time.top/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
   
   <entry>
     <title>nginx实现手机浏览自动跳转</title>
