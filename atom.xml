@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.an-time.top/"/>
-  <updated>2018-05-31T02:22:28.902Z</updated>
+  <updated>2018-06-26T02:52:55.034Z</updated>
   <id>http://www.an-time.top/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ubuntu16.04搭建nginx+php7环境</title>
+    <link href="http://www.an-time.top/2018/06/26/ubuntu16-04%E6%90%AD%E5%BB%BAnginx-php7%E7%8E%AF%E5%A2%83/"/>
+    <id>http://www.an-time.top/2018/06/26/ubuntu16-04搭建nginx-php7环境/</id>
+    <published>2018-06-26T02:39:15.000Z</published>
+    <updated>2018-06-26T02:52:55.034Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>公司一直使用nginx+php-fpm的方式来构建网站，记录一下构建过程。使用的是ubuntu16.04和php7。</p><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><pre><code>$ apt install nginx php -y$ apt-get -y install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache  php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mbstring php-gettext php-bcmath php7.0-pdo-pgsql$ apt-get -y install php-apcu$ systemctl reload php7.0-fpm.service</code></pre><p>ok,至此就安装完成了，而且常用插件都包含在内；若有其他需要另行安装。</p><h1 id="配置网站："><a href="#配置网站：" class="headerlink" title="配置网站："></a>配置网站：</h1><ol><li><p>创建网站目录 </p><pre><code>$ mkdir -p /srv/www/www.myweb.com</code></pre></li><li><p>创建网站配置文件</p><pre><code>$ vim /etc/nginx/site-available/myweb.com$ cat /etc/nginx/site-available/myweb.comserver{         listen       80;         server_name www.myweb.com;         server_name_in_redirect  off;         index index.html index.htm index.php;         root  /srv/www/www.myweb.com;         error_page   400 403 404 500 502 503 504  /50x.html;         location = /50x.html {            root   html;         }         location /         {            try_files $uri $uri/ /index.php$is_args$query_string;         }         location ~ .*\.(php|php5)?$         {            fastcgi_pass unix:/run/php/php7.0-fpm.sock;            include snippets/fastcgi-php.conf;         }         location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$         {            expires      1d;         }         location ~ .*\.(js|css)?$         {            expires      1h;         }         location ~ /\.ht {            deny  all;         }}$ ln -s /etc/nginx/sites-available/www.myweb.com /etc/nginx/site-enable/www.myweb.com</code></pre></li><li><p>下载配置 </p><pre><code>$ nginx -s reload</code></pre></li></ol><p>#参考：<br><a href="https://linuxconfig.org/basic-php-7-and-nginx-configuration-on-ubuntu-16-04-linux" target="_blank" rel="external">https://linuxconfig.org/basic-php-7-and-nginx-configuration-on-ubuntu-16-04-linux</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介：&quot;&gt;&lt;a href=&quot;#简介：&quot; class=&quot;headerlink&quot; title=&quot;简介：&quot;&gt;&lt;/a&gt;简介：&lt;/h1&gt;&lt;p&gt;公司一直使用nginx+php-fpm的方式来构建网站，记录一下构建过程。使用的是ubuntu16.04和php7。&lt;/p&gt;
+&lt;h1
+      
+    
+    </summary>
+    
+    
+      <category term="ubuntu16.04" scheme="http://www.an-time.top/tags/ubuntu16-04/"/>
+    
+      <category term="nginx" scheme="http://www.an-time.top/tags/nginx/"/>
+    
+      <category term="php7" scheme="http://www.an-time.top/tags/php7/"/>
+    
+  </entry>
   
   <entry>
     <title>gitosis仓库搭建及使用</title>
