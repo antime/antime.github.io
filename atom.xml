@@ -46,15 +46,18 @@
     <link href="http://www.an-time.top/2018/07/06/docker%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E8%B7%B5/"/>
     <id>http://www.an-time.top/2018/07/06/docker从入门到实践/</id>
     <published>2018-07-06T01:49:42.000Z</published>
-    <updated>2019-05-30T06:41:43.773Z</updated>
+    <updated>2019-05-30T06:41:13.161Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介:"></a>简介:</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介:"></a>简介:</h1><ul><li>最近发了两天时间，把docker从入门到实践重新读了一遍，又有新的收获，记录一下。</li></ul><h1 id="链接"><a href="#链接" class="headerlink" title="链接:"></a>链接:</h1><p><a href="https://docker_practice.gitee.io/" target="_blank" rel="external">https://docker_practice.gitee.io/</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介:&quot;&gt;&lt;/a&gt;简介:&lt;/h1&gt;
+        &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介:&quot;&gt;&lt;/a&gt;简介:&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;最近发了两天时间，把docker从入门到实践重新读了一遍，又有新的收获，记录一下。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;链
       
     
     </summary>
@@ -69,9 +72,9 @@
     <link href="http://www.an-time.top/2018/06/26/ubuntu16-04%E6%90%AD%E5%BB%BAnginx-php7%E7%8E%AF%E5%A2%83/"/>
     <id>http://www.an-time.top/2018/06/26/ubuntu16-04搭建nginx-php7环境/</id>
     <published>2018-06-26T02:39:15.000Z</published>
-    <updated>2019-05-30T06:42:12.534Z</updated>
+    <updated>2019-05-30T06:41:51.648Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>公司一直使用nginx+php-fpm的方式来构建网站，记录一下构建过程。使用的是ubuntu16.04和php7。</p><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><pre><code>$ apt install nginx php -y$ apt-get -y install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache  php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mbstring php-gettext php-bcmath php7.0-pdo-pgsql$ apt-get -y install php-apcu$ systemctl reload php7.0-fpm.service</code></pre><p>ok,至此就安装完成了，而且常用插件都包含在内；若有其他需要另行安装。</p><h1 id="配置网站："><a href="#配置网站：" class="headerlink" title="配置网站："></a>配置网站：</h1><ol><li><p>创建网站目录 </p><pre><code>$ mkdir -p /srv/www/www.myweb.com</code></pre></li><li>创建网站配置文件</li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>公司一直使用nginx+php-fpm的方式来构建网站，记录一下构建过程。使用的是ubuntu16.04和php7。</p><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><pre><code>$ apt install nginx php -y$ apt-get -y install php7.0-mysql php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache  php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl php7.0-mbstring php-gettext php-bcmath php7.0-pdo-pgsql$ apt-get -y install php-apcu$ systemctl reload php7.0-fpm.service</code></pre><p>ok,至此就安装完成了，而且常用插件都包含在内；若有其他需要另行安装。</p><h1 id="配置网站："><a href="#配置网站：" class="headerlink" title="配置网站："></a>配置网站：</h1><ol><li><p>创建网站目录 </p><pre><code>$ mkdir -p /srv/www/www.myweb.com</code></pre></li><li><p>创建网站配置文件</p><pre><code>$ vim /etc/nginx/site-available/myweb.com$ cat /etc/nginx/site-available/myweb.comserver{         listen       80;         server_name www.myweb.com;         server_name_in_redirect  off;         index index.html index.htm index.php;         root  /srv/www/www.myweb.com;         error_page   400 403 404 500 502 503 504  /50x.html;         location = /50x.html {            root   html;         }         location /         {            try_files $uri $uri/ /index.php$is_args$query_string;         }         location ~ .*\.(php|php5)?$         {            fastcgi_pass unix:/run/php/php7.0-fpm.sock;            include snippets/fastcgi-php.conf;         }         location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$         {            expires      1d;         }         location ~ .*\.(js|css)?$         {            expires      1h;         }         location ~ /\.ht {            deny  all;         }}$ ln -s /etc/nginx/sites-available/www.myweb.com /etc/nginx/site-enable/www.myweb.com</code></pre></li><li><p>下载配置 </p><pre><code>$ nginx -s reload</code></pre></li></ol><p>#参考：<br><a href="https://linuxconfig.org/basic-php-7-and-nginx-configuration-on-ubuntu-16-04-linux" target="_blank" rel="external">https://linuxconfig.org/basic-php-7-and-nginx-configuration-on-ubuntu-16-04-linux</a></p>]]></content>
     
     <summary type="html">
     
@@ -97,9 +100,9 @@
     <link href="http://www.an-time.top/2018/05/31/gitosis%E4%BB%93%E5%BA%93%E6%90%AD%E5%BB%BA%E5%8F%8A%E4%BD%BF%E7%94%A8/"/>
     <id>http://www.an-time.top/2018/05/31/gitosis仓库搭建及使用/</id>
     <published>2018-05-31T02:04:37.000Z</published>
-    <updated>2019-05-30T06:30:57.678Z</updated>
+    <updated>2019-05-30T06:30:35.673Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>gitosis是一个无界面的远程git仓库</p><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><ol><li><p>安装:</p><pre><code>$ git clone https://github.com/tv42/gitosis.git$ cd gitosis$ sudo python setup.py install</code></pre></li><li><p>配置：</p><pre><code>$ useradd git $ echo &apos;PATH=/usr/local/bin:/usr/local/bin/git:$PATH&apos; /home/git/.bashrc$ ssh-keygen -t rsa$ cp ~/.ssh/id_rsa.pub /tmp/id_rsa.pub$ sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub$ cd test$ touch README$ git init$ git remote add origin git@localhost:test.git$ git add .$ git commit -am &apos;初始化&apos;$ git push origin master</code></pre></li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h1><p>gitosis是一个无界面的远程git仓库</p><h1 id="安装："><a href="#安装：" class="headerlink" title="安装："></a>安装：</h1><ol><li><p>安装:</p><pre><code>$ git clone https://github.com/tv42/gitosis.git$ cd gitosis$ sudo python setup.py install</code></pre></li><li><p>配置：</p><pre><code>$ useradd git $ echo &apos;PATH=/usr/local/bin:/usr/local/bin/git:$PATH&apos; /home/git/.bashrc$ ssh-keygen -t rsa$ cp ~/.ssh/id_rsa.pub /tmp/id_rsa.pub$ sudo -H -u git gitosis-init &lt; /tmp/id_rsa.pub</code></pre></li><li><p>添加新仓库：</p><pre><code>$ git clone git@localhost:gitosis-admin.git$ cd gitosis-admin$ cat gitosis.conf[gitosis][group gitosis-admin]members = Macwritable = gitosis-admin[group test] #新增仓库members = Macwritable = gitosis-admin$ git commit -a -m &quot;添加新仓库test&quot;$ git push</code></pre></li><li><p>初始化新加的仓库：</p><pre><code>$ mkdir test$ cd test$ touch README$ git init$ git remote add origin git@localhost:test.git$ git add .$ git commit -am &apos;初始化&apos;$ git push origin master</code></pre></li><li><p>添加用户：</p><p> 把用户公钥添加到gitosis-admin/keydir目录下，如命名为test.pub；修改gitosis.conf中的members中添加用户名test（不用加.pub）即可。在用户机器上即可clone和push了。</p></li></ol><h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><p><a href="https://www.cnblogs.com/serv/archive/2017/06/10/6980085.html" target="_blank" rel="external">https://www.cnblogs.com/serv/archive/2017/06/10/6980085.html</a>  </p><p><a href="https://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Gitosis" target="_blank" rel="external">https://git-scm.com/book/zh/v1/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-Gitosis</a></p>]]></content>
     
     <summary type="html">
     
